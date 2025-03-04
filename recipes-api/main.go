@@ -1,3 +1,15 @@
+// Recipes API
+// This is a sample recipes API. you can find out more about this API at https://github.com/PacktPublishing/Building-Distributed-Applications-in-Gin
+// Schemes: http
+// Host: localhost:8080
+// BasePath: /
+// Version: 1.0.0
+// Contact: Darasimi <kelanidarasimi9@gmail.com>
+// Consumes:
+// - application/json
+// Produces:
+// - application/json
+// swagger:meta
 package main
 
 import (
@@ -39,10 +51,19 @@ func LoadData() {
 }
 
 type Recipe struct {
-	ID           string    `json:"id"`
-	Name         string    `json:"name"`
-	Tags         []string  `json:"tags"`
-	Ingredients  []string  `json:"ingredients"`
+	ID string `json:"id"`
+
+	// The name of the recipe
+	// example: "Spaghetti Carbonara"
+	Name string `json:"name"`
+	// List of tags for categorization
+	// example: ["Italian", "Pasta", "Dinner"]
+	Tags []string `json:"tags"`
+	// List of ingredients
+	// example: ["Eggs", "Parmesan Cheese", "Bacon", "Spaghetti"]
+	Ingredients []string `json:"ingredients"`
+	// Step-by-step cooking instructions
+	// example: ["Boil pasta", "Cook bacon", "Mix eggs with cheese", "Combine everything"]
 	Instructions []string  `json:"instructions"`
 	PublishedAt  time.Time `json:"publishedAt"`
 }
@@ -64,6 +85,25 @@ func SearchRecipeHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, listOfRecipes)
 }
+
+// swagger:operation PUT /recipes/{id} recipes updateRecipe
+// Updates a recipe
+// ---
+// parameters:
+// - name: id
+//   in: path
+//   description: ID of the recipe to update
+//   required: true
+//   type: string
+// produces:
+// - application/json
+// responses:
+//   '200':
+//     description: successful operation
+//   '400':
+//     description: invalid data
+//   '404':
+//     description: invalid recipe ID
 
 func UpdateRecipeHandler(c *gin.Context) {
 	id := c.Param("id")
@@ -94,6 +134,29 @@ func UpdateRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, recipe)
 }
 
+// swagger:operation POST /recipes recipes newRecipe
+// Creates a new recipe
+// ---
+// consumes:
+//   - application/json
+//
+// produces:
+//   - application/json
+//
+// parameters:
+//   - in: body
+//     name: recipe
+//     description: The recipe to create
+//     required: true
+//     schema:
+//     $ref: "#/definitions/Recipe"
+//
+// responses:
+//
+//	'201':
+//	  description: successful operation
+//	'400':
+//	  description: invalid request data
 func NewRecipeHandler(c *gin.Context) {
 	var recipe Recipe
 
@@ -129,6 +192,21 @@ func DeleteRecipeHandler(c *gin.Context) {
 	recipes = slices.Delete(recipes, index, index+1)
 	c.JSON(http.StatusOK, gin.H{"message": "recipe deleted"})
 }
+
+// swagger:operation GET /recipes recipes listRecipes
+// Returns a list of recipes
+// ---
+// produces:
+// - application/json
+// responses:
+//
+//	'200':
+//	 description: successful operation
+//	schema:
+//	type: array
+//
+// items:
+// $ref: '#/definitions/Recipe'
 func ListRecipesHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, recipes)
 }

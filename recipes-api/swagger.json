@@ -1,0 +1,100 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Recipes API\nThis is a sample recipes API. you can find out more about this API at https://github.com/PacktPublishing/Building-Distributed-Applications-in-Gin",
+    "contact": {
+      "name": "Darasimi",
+      "email": "kelanidarasimi9@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/recipes": {
+      "get": {
+        "description": "Returns a list of recipes",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "operationId": "listRecipes"
+      },
+      "post": {
+        "description": "Creates a new recipe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "operationId": "newRecipe",
+        "parameters": [
+          {
+            "description": "The recipe to create",
+            "name": "recipe",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "invalid request data"
+          }
+        }
+      }
+    },
+    "/recipes/{id}": {
+      "put": {
+        "description": "Updates a recipe",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "operationId": "updateRecipe",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the recipe to update",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "invalid data"
+          },
+          "404": {
+            "description": "invalid recipe ID"
+          }
+        }
+      }
+    }
+  }
+}
